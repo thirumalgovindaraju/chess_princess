@@ -1,0 +1,3577 @@
+// lib/presentation/pages/training/training_hub_page.dart
+import 'package:flutter/material.dart';
+import 'package:chess_princess/domain/entities/drill.dart';
+
+class TrainingHubPage extends StatelessWidget {
+  const TrainingHubPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Training Hub'),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withOpacity(0.7),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.fitness_center, color: Colors.white, size: 32),
+                      SizedBox(width: 12),
+                      Text(
+                        'Choose Your Training',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Select a training tool to improve your chess skills',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.9),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Training Tools Grid
+            const Text(
+              'Training Tools',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            _buildTrainingCard(
+              context,
+              title: 'Tactics Trainer',
+              description: 'Solve puzzles to sharpen your tactical vision',
+              icon: Icons.flash_on,
+              color: Colors.orange,
+              difficulty: 'All Levels',
+              estimatedTime: '15-30 min',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Tactics Trainer coming soon!')),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+
+            _buildTrainingCard(
+              context,
+              title: 'Vision Trainer',
+              description: 'Train your board visualization and memory',
+              icon: Icons.visibility,
+              color: Colors.purple,
+              difficulty: 'Intermediate',
+              estimatedTime: '10-20 min',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Vision Trainer coming soon!')),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+
+            _buildTrainingCard(
+              context,
+              title: 'Endgame Drills',
+              description: 'Master essential endgame techniques and patterns',
+              icon: Icons.castle,
+              color: Colors.green,
+              difficulty: 'Beginner - Advanced',
+              estimatedTime: '20-40 min',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Endgame Drills coming soon!')),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+
+            _buildTrainingCard(
+              context,
+              title: 'Opening Drills',
+              description: 'Learn and practice popular chess openings',
+              icon: Icons.play_circle,
+              color: Colors.blue,
+              difficulty: 'All Levels',
+              estimatedTime: '15-30 min',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Opening Drills coming soon!')),
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+
+            // Quick Stats Section
+            const Text(
+              'Your Training Stats',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.psychology,
+                    label: 'Puzzles Solved',
+                    value: '156',
+                    color: Colors.orange,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.fitness_center,
+                    label: 'Drills Done',
+                    value: '24',
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.visibility,
+                    label: 'Vision Score',
+                    value: '85%',
+                    color: Colors.purple,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatCard(
+                    icon: Icons.trending_up,
+                    label: 'Avg Rating',
+                    value: '1650',
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildTrainingCard(
+      BuildContext context, {
+        required String title,
+        required String description,
+        required IconData icon,
+        required Color color,
+        required String difficulty,
+        required String estimatedTime,
+        required VoidCallback onTap,
+      }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              // Icon Container
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color, size: 32),
+              ),
+              const SizedBox(width: 16),
+
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                        height: 1.3,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.signal_cellular_alt,
+                            size: 14,
+                            color: Colors.grey[500]),
+                        const SizedBox(width: 4),
+                        Text(
+                          difficulty,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(Icons.timer,
+                            size: 14,
+                            color: Colors.grey[500]),
+                        const SizedBox(width: 4),
+                        Text(
+                          estimatedTime,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              // Arrow Icon
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey[400],
+                size: 18,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildStatCard({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 28),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+--------------------------------------------
+// lib/core/extensions/date_extensions.dart
+extension DateTimeExtension on DateTime {
+  /// Returns true if date is today
+  bool isToday() {
+    final now = DateTime.now();
+    return year == now.year && month == now.month && day == now.day;
+  }
+
+  /// Returns true if date is yesterday
+  bool isYesterday() {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    return year == yesterday.year &&
+        month == yesterday.month &&
+        day == yesterday.day;
+  }
+
+  /// Returns true if date is this week
+  bool isThisWeek() {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
+    return isAfter(startOfWeek) && isBefore(endOfWeek);
+  }
+
+  /// Formats date as "time ago" string
+  String timeAgo() {
+    final now = DateTime.now();
+    final difference = now.difference(this);
+
+    if (difference.inSeconds < 60) {
+      return 'just now';
+    } else if (difference.inMinutes < 60) {
+      final minutes = difference.inMinutes;
+      return '$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago';
+    } else if (difference.inHours < 24) {
+      final hours = difference.inHours;
+      return '$hours ${hours == 1 ? 'hour' : 'hours'} ago';
+    } else if (difference.inDays < 7) {
+      final days = difference.inDays;
+      return '$days ${days == 1 ? 'day' : 'days'} ago';
+    } else if (difference.inDays < 30) {
+      final weeks = (difference.inDays / 7).floor();
+      return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+    } else if (difference.inDays < 365) {
+      final months = (difference.inDays / 30).floor();
+      return '$months ${months == 1 ? 'month' : 'months'} ago';
+    } else {
+      final years = (difference.inDays / 365).floor();
+      return '$years ${years == 1 ? 'year' : 'years'} ago';
+    }
+  }
+
+  /// Formats date as readable string
+  String toReadableDate() {
+    if (isToday()) return 'Today';
+    if (isYesterday()) return 'Yesterday';
+
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    return '${months[month - 1]} $day, $year';
+  }
+
+  /// Formats time as HH:mm
+  String toTimeString() {
+    final h = hour.toString().padLeft(2, '0');
+    final m = minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  /// Returns start of day (00:00:00)
+  DateTime get startOfDay {
+    return DateTime(year, month, day);
+  }
+
+  /// Returns end of day (23:59:59)
+  DateTime get endOfDay {
+    return DateTime(year, month, day, 23, 59, 59);
+  }
+
+  /// Adds business days (excluding weekends)
+  DateTime addBusinessDays(int days) {
+    var date = this;
+    var remaining = days;
+
+    while (remaining > 0) {
+      date = date.add(const Duration(days: 1));
+      if (date.weekday != DateTime.saturday &&
+          date.weekday != DateTime.sunday) {
+        remaining--;
+      }
+    }
+
+    return date;
+  }
+}
+-------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+
+---------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-----------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+----------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+---------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+-------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+------------------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+--------------------------------
+extension DoubleExtension on double {
+  /// Formats to percentage string
+  String toPercentage({int decimals = 0}) {
+    return '${(this * 100).toStringAsFixed(decimals)}%';
+  }
+
+  /// Rounds to specified decimal places
+  double roundTo(int places) {
+    final mod = 10.0 * places;
+    return (this * mod).round() / mod;
+  }
+
+  /// Formats rating with one decimal
+  String toRatingString() {
+    return toStringAsFixed(1);
+  }
+
+  /// Converts to progress value (0.0 to 1.0)
+  double toProgress() {
+    if (this < 0) return 0.0;
+    if (this > 1) return 1.0;
+    return this;
+  }
+}
+
+
+lib/
+├── core/
+│   ├── extensions/
+│   │   ├── date_extensions.dart
+│   │   └── double_extensions.dart
+│
+├── domain/
+│   ├── entities/
+│   │   ├── drill.dart
+│   │   └── puzzle.dart
+│   ├── services/
+│   │   └── training_service.dart
+│
+├── presentation/
+│   ├── pages/
+│   │   ├── training/
+│   │   │   ├── training_hub_page.dart
+│   │   │   ├── tactics_trainer_page.dart
+│   │   │   ├── vision_trainer_page.dart
+│   │   │   ├── endgame_drills_page.dart
+│   │   │   └── opening_drills_page.dart
+│   │   └── puzzle_screen.dart
+│   ├── widgets/
+│   │   ├── training_card.dart
+│   │   ├── stat_card.dart
+│   │   ├── chess_board_widget.dart
+│   │   └── puzzle_viewer.dart
+│
+├── main.dart
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+class XPService {
+  static const _xpKey = 'user_xp';
+
+  static Future<int> getXP() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_xpKey) ?? 0;
+  }
+
+  static Future<void> addXP(int points) async {
+    final prefs = await SharedPreferences.getInstance();
+    int current = prefs.getInt(_xpKey) ?? 0;
+    prefs.setInt(_xpKey, current + points);
+  }
+
+  static int getLevelFromXP(int xp) {
+    // Level up every 100 XP
+    return (xp / 100).floor() + 1;
+  }
+
+  static double getProgressToNextLevel(int xp) {
+    final remainder = xp % 100;
+    return remainder / 100.0;
+  }
+}
+------------
+import 'package:flutter/material.dart';
+import '../../domain/services/xp_service.dart';
+
+class XPProgressBar extends StatefulWidget {
+  const XPProgressBar({Key? key}) : super(key: key);
+
+  @override
+  State<XPProgressBar> createState() => _XPProgressBarState();
+}
+
+class _XPProgressBarState extends State<XPProgressBar> {
+  int _xp = 0;
+  int _level = 1;
+  double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadXP();
+  }
+
+  Future<void> _loadXP() async {
+    final xp = await XPService.getXP();
+    setState(() {
+      _xp = xp;
+      _level = XPService.getLevelFromXP(xp);
+      _progress = XPService.getProgressToNextLevel(xp);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.indigo.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.stars, color: Colors.amber),
+              const SizedBox(width: 8),
+              Text('Level $_level', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              const Spacer(),
+              Text('XP: $_xp', style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: _progress,
+              minHeight: 10,
+              color: Colors.amber,
+              backgroundColor: Colors.indigo.withOpacity(0.2),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+---------------
+import 'package:flutter/material.dart';
+
+class SlidePageRoute<T> extends PageRouteBuilder<T> {
+  final Widget page;
+
+  SlidePageRoute({required this.page})
+      : super(
+          pageBuilder: (_, __, ___) => page,
+          transitionsBuilder: (_, animation, __, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(position: animation.drive(tween), child: child);
+          },
+        );
+}
+--------
+import 'package:flutter/material.dart';
+
+class LevelUpDialog extends StatelessWidget {
+  final int level;
+  const LevelUpDialog({required this.level, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: Colors.indigo[800],
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.stars, color: Colors.amber, size: 80),
+            const SizedBox(height: 16),
+            Text(
+              'Level Up!',
+              style: TextStyle(color: Colors.amber[300], fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'You reached level $level!',
+              style: const TextStyle(color: Colors.white70, fontSize: 16),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Awesome!'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+-------------------
+# Chess Princess Auth Server - Docker Configuration
+
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies for bcrypt native compilation
+RUN apk add --no-cache python3 make g++
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY server.js ./
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:5000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start application
+CMD ["node", "server.js"]
+-------
+-- Chess Princess Database Schema
+-- PostgreSQL 15+
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    username VARCHAR(50) UNIQUE,
+    email VARCHAR(255) UNIQUE,
+    phone VARCHAR(20) UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    last_login TIMESTAMP,
+    
+    -- Constraints
+    CONSTRAINT check_username_length CHECK (LENGTH(username) >= 3),
+    CONSTRAINT check_name_length CHECK (LENGTH(name) >= 2),
+    CONSTRAINT check_identifier CHECK (
+        username IS NOT NULL OR 
+        email IS NOT NULL OR 
+        phone IS NOT NULL
+    )
+);
+
+-- OTP codes table
+CREATE TABLE IF NOT EXISTS otp_codes (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(255) NOT NULL,
+    code VARCHAR(6) NOT NULL,
+    method VARCHAR(20) NOT NULL CHECK (method IN ('sms', 'whatsapp', 'email')),
+    attempts INT DEFAULT 0,
+    is_used BOOLEAN DEFAULT FALSE,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    
+    -- Constraints
+    CONSTRAINT check_code_format CHECK (code ~ '^[0-9]{6}$'),
+    CONSTRAINT check_max_attempts CHECK (attempts <= 3)
+);
+
+-- Sessions table
+CREATE TABLE IF NOT EXISTS sessions (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(500) UNIQUE NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    device_info JSONB,
+    ip_address INET,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    expires_at TIMESTAMP NOT NULL,
+    last_activity TIMESTAMP DEFAULT NOW()
+);
+
+-- Password reset tokens table
+CREATE TABLE IF NOT EXISTS password_resets (
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(64) UNIQUE NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- User activity log table
+CREATE TABLE IF NOT EXISTS user_activities (
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    activity_type VARCHAR(50) NOT NULL,
+    activity_data JSONB,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email) WHERE email IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username) WHERE username IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone) WHERE phone IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
+
+CREATE INDEX IF NOT EXISTS idx_otp_identifier ON otp_codes(identifier);
+CREATE INDEX IF NOT EXISTS idx_otp_expires_at ON otp_codes(expires_at);
+CREATE INDEX IF NOT EXISTS idx_otp_created_at ON otp_codes(created_at);
+
+CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
+CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
+CREATE INDEX IF NOT EXISTS idx_sessions_active ON sessions(is_active) WHERE is_active = TRUE;
+
+CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets(token);
+CREATE INDEX IF NOT EXISTS idx_password_resets_user_id ON password_resets(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_activities_user_id ON user_activities(user_id);
+CREATE INDEX IF NOT EXISTS idx_activities_type ON user_activities(activity_type);
+CREATE INDEX IF NOT EXISTS idx_activities_created_at ON user_activities(created_at);
+
+-- Function to update updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger for users table
+CREATE TRIGGER update_users_updated_at
+    BEFORE UPDATE ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Function to cleanup expired OTPs
+CREATE OR REPLACE FUNCTION cleanup_expired_otps()
+RETURNS void AS $$
+BEGIN
+    DELETE FROM otp_codes 
+    WHERE expires_at < NOW() - INTERVAL '1 day';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to cleanup expired sessions
+CREATE OR REPLACE FUNCTION cleanup_expired_sessions()
+RETURNS void AS $$
+BEGIN
+    DELETE FROM sessions 
+    WHERE expires_at < NOW();
+    
+    UPDATE sessions 
+    SET is_active = FALSE 
+    WHERE last_activity < NOW() - INTERVAL '7 days';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to cleanup used password reset tokens
+CREATE OR REPLACE FUNCTION cleanup_password_resets()
+RETURNS void AS $$
+BEGIN
+    DELETE FROM password_resets 
+    WHERE is_used = TRUE OR expires_at < NOW();
+END;
+$$ LANGUAGE plpgsql;
+
+-- Insert demo admin user (password: admin123)
+INSERT INTO users (username, email, phone, name, password_hash, is_verified)
+VALUES (
+    'admin',
+    'admin@chess.com',
+    '+919876543210',
+    'Admin User',
+    '$2b$10$rZ5YdHBJXKZHvPJXGKqyweYLME8OJvL9QqHcVKhY9Y8O7lFXNLQFy', -- admin123
+    TRUE
+) ON CONFLICT DO NOTHING;
+
+-- Create view for active sessions
+CREATE OR REPLACE VIEW active_sessions AS
+SELECT 
+    s.id,
+    s.token,
+    s.user_id,
+    u.username,
+    u.email,
+    s.ip_address,
+    s.created_at,
+    s.last_activity,
+    s.expires_at
+FROM sessions s
+JOIN users u ON s.user_id = u.id
+WHERE s.is_active = TRUE 
+  AND s.expires_at > NOW();
+
+-- Grant permissions (adjust as needed)
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO postgres;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO postgres;
+
+-- Comments for documentation
+COMMENT ON TABLE users IS 'Main users table storing user accounts';
+COMMENT ON TABLE otp_codes IS 'Temporary OTP codes for verification';
+COMMENT ON TABLE sessions IS 'Active user sessions with JWT tokens';
+COMMENT ON TABLE password_resets IS 'Password reset tokens';
+COMMENT ON TABLE user_activities IS 'Audit log for user activities';
+
+COMMENT ON COLUMN users.password_hash IS 'bcrypt hashed password (nullable for OTP-only users)';
+COMMENT ON COLUMN sessions.device_info IS 'JSON data about device (user agent, platform, etc.)';
+COMMENT ON COLUMN user_activities.activity_data IS 'JSON data specific to activity type';
+
+-- Display database info
+SELECT 'Database initialized successfully!' AS status;
+SELECT COUNT(*) AS user_count FROM users;
+SELECT version() AS postgresql_version;
+----
+# Chess Princess Auth Server - Docker Configuration
+
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies for bcrypt native compilation
+RUN apk add --no-cache python3 make g++
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY server.js ./
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:5000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start application
+CMD ["node", "server.js"]
+-----
+# Chess Princess - Production Authentication System
+
+Complete production-ready authentication system with Flutter frontend and Node.js backend.
+
+## 🚀 Features
+
+### Authentication Methods
+- ✅ SMS OTP Login (via Twilio)
+- ✅ WhatsApp OTP Login (via Twilio)
+- ✅ Email OTP Login
+- ✅ Username/Password Login
+- ✅ User Registration
+- ✅ Password Reset
+
+### Security Features
+- 🔒 JWT token-based authentication
+- 🔒 bcrypt password hashing (10 rounds)
+- 🔒 Rate limiting (5 attempts per 15 min)
+- 🔒 Helmet.js security headers
+- 🔒 OTP expiration (10 minutes)
+- 🔒 Token blacklisting on logout
+- 🔒 Input validation & sanitization
+
+### Additional Features
+- 📱 India phone number support (+91)
+- 🌍 Multi-country support
+- ⏱️ OTP countdown timer
+- 🔄 Session persistence
+- 📊 Error handling & logging
+
+## 📋 Prerequisites
+
+- Node.js >= 16.0.0
+- npm >= 8.0.0
+- Flutter SDK >= 3.0.0
+- Twilio Account (for SMS/WhatsApp)
+
+## 🛠️ Backend Setup
+
+### 1. Install Dependencies
+
+```bash
+cd backend
+npm install
+```
+
+### 2. Configure Environment Variables
+
+Copy `.env.example` to `.env` and update:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+```env
+PORT=5000
+JWT_SECRET=your-secret-key-min-32-characters
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE=+1234567890
+```
+
+### 3. Get Twilio Credentials
+
+1. Sign up at [Twilio](https://www.twilio.com/)
+2. Get Account SID and Auth Token from dashboard
+3. Get a phone number for SMS/WhatsApp
+
+### 4. Start the Server
+
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm start
+```
+
+Server will run on `http://localhost:5000`
+
+### 5. Test Endpoints
+
+```bash
+# Health check
+curl http://localhost:5000/api/health
+
+# Test login with demo credentials
+curl -X POST http://localhost:5000/api/auth/login/username \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin",
+    "password": "admin123"
+  }'
+```
+
+## 📱 Flutter Frontend Setup
+
+### 1. Update pubspec.yaml
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.1
+  dio: ^5.4.0
+  shared_preferences: ^2.2.2
+```
+
+### 2. Update API Base URL
+
+In `lib/data/services/auth_service.dart`, update:
+
+```dart
+static const String _baseUrl = 'http://localhost:5000/api';
+// For Android emulator use: 'http://10.0.2.2:5000/api'
+// For iOS simulator use: 'http://localhost:5000/api'
+// For physical device use your computer's IP: 'http://192.168.x.x:5000/api'
+```
+
+### 3. Install Dependencies
+
+```bash
+flutter pub get
+```
+
+### 4. Run the App
+
+```bash
+flutter run
+```
+
+## 🧪 Testing
+
+### Demo Credentials
+
+The server includes a pre-configured demo account:
+
+```
+Username: admin
+Password: admin123
+Email: admin@chess.com
+Phone: +919876543210
+```
+
+### OTP Testing
+
+In development mode (without Twilio configured), OTPs are logged to console:
+
+```
+📱 SMS (MOCK): Your Chess Princess verification code is: 123456 to +919876543210
+```
+
+## 📡 API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/send-sms-code` | Send SMS OTP |
+| POST | `/api/auth/send-whatsapp-code` | Send WhatsApp OTP |
+| POST | `/api/auth/send-email-code` | Send Email OTP |
+| POST | `/api/auth/login/sms` | Login with SMS OTP |
+| POST | `/api/auth/login/whatsapp` | Login with WhatsApp |
+| POST | `/api/auth/login/email` | Login with Email OTP |
+| POST | `/api/auth/login/username` | Login with username/password |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/password-reset` | Request password reset |
+| GET | `/api/auth/profile` | Get user profile (protected) |
+| POST | `/api/auth/logout` | Logout user (protected) |
+
+### Request Examples
+
+#### Send SMS OTP
+```json
+POST /api/auth/send-sms-code
+{
+  "phone": "+919876543210"
+}
+```
+
+#### Login with SMS
+```json
+POST /api/auth/login/sms
+{
+  "phone": "+919876543210",
+  "verification_code": "123456"
+}
+```
+
+#### Login with Username/Password
+```json
+POST /api/auth/login/username
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+#### Register User
+```json
+POST /api/auth/register
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+919876543210",
+  "password": "SecurePass123"
+}
+```
+
+### Response Format
+
+Success Response:
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "uuid",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+919876543210",
+    "username": "john"
+  }
+}
+```
+
+Error Response:
+```json
+{
+  "success": false,
+  "message": "Invalid credentials"
+}
+```
+
+## 🏗️ Project Structure
+
+```
+chess_princess/
+├── backend/
+│   ├── server.js              # Main server file
+│   ├── package.json           # Dependencies
+│   ├── .env                   # Environment variables
+│   └── .env.example           # Environment template
+│
+├── lib/
+│   ├── main.dart              # App entry point
+│   ├── core/
+│   │   ├── enums/
+│   │   │   └── auth_enums.dart
+│   │   └── utils/
+│   │       └── validators.dart
+│   ├── data/
+│   │   └── services/
+│   │       └── auth_service.dart
+│   └── presentation/
+│       ├── providers/
+│       │   └── auth_provider.dart
+│       └── screens/
+│           └── auth/
+│               ├── login_screen.dart
+│               └── register_screen.dart
+```
+
+## 🔐 Security Best Practices
+
+### Backend
+1. **Never commit `.env` files** - Use `.env.example` as template
+2. **Use strong JWT secrets** - Minimum 32 characters
+3. **Enable HTTPS in production** - Use SSL/TLS certificates
+4. **Rate limiting** - Already configured (5 attempts per 15 min)
+5. **Input validation** - Validate all user inputs
+6. **Database security** - Use parameterized queries
+7. **CORS configuration** - Whitelist specific origins
+
+### Flutter
+1. **Secure storage** - Use `flutter_secure_storage` for tokens in production
+2. **API keys** - Never hardcode API keys in source code
+3. **Certificate pinning** - Implement SSL pinning for production
+4. **Code obfuscation** - Build with `--obfuscate` flag
+5. **ProGuard rules** - Configure for Android release builds
+
+## 🚀 Production Deployment
+
+### Backend Deployment Options
+
+#### 1. Heroku
+```bash
+# Install Heroku CLI
+heroku login
+heroku create chess-princess-api
+
+# Set environment variables
+heroku config:set JWT_SECRET=your-secret
+heroku config:set TWILIO_ACCOUNT_SID=your-sid
+heroku config:set TWILIO_AUTH_TOKEN=your-token
+
+# Deploy
+git push heroku main
+```
+
+#### 2. DigitalOcean / AWS / Azure
+```bash
+# Build Docker container
+docker build -t chess-princess-api .
+docker run -p 5000:5000 chess-princess-api
+
+# Or use PM2 for process management
+npm install -g pm2
+pm2 start server.js --name chess-api
+pm2 startup
+pm2 save
+```
+
+#### 3. Environment Variables in Production
+```bash
+# Update .env for production
+NODE_ENV=production
+PORT=5000
+JWT_SECRET=<strong-secret-min-64-chars>
+FRONTEND_URL=https://yourdomain.com
+ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+```
+
+### Flutter Deployment
+
+#### Android
+```bash
+# Build release APK
+flutter build apk --release --obfuscate --split-debug-info=./debug-info
+
+# Build App Bundle (for Play Store)
+flutter build appbundle --release
+```
+
+#### iOS
+```bash
+# Build for App Store
+flutter build ipa --release
+```
+
+## 🗄️ Database Migration (Production)
+
+For production, replace in-memory stores with a database:
+
+### PostgreSQL Schema
+```sql
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(50) UNIQUE,
+    email VARCHAR(255) UNIQUE,
+    phone VARCHAR(20) UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE otp_codes (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(255) NOT NULL,
+    code VARCHAR(6) NOT NULL,
+    method VARCHAR(20) NOT NULL,
+    attempts INT DEFAULT 0,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE sessions (
+    token VARCHAR(500) PRIMARY KEY,
+    user_id UUID REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT NOW(),
+    expires_at TIMESTAMP NOT NULL
+);
+
+CREATE INDEX idx_otp_identifier ON otp_codes(identifier);
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+```
+
+### Redis for Session Management
+```javascript
+const redis = require('redis');
+const client = redis.createClient({
+  url: process.env.REDIS_URL
+});
+
+// Store session
+await client.setEx(`session:${token}`, 86400, JSON.stringify(sessionData));
+
+// Get session
+const session = await client.get(`session:${token}`);
+```
+
+## 📊 Monitoring & Logging
+
+### Add Winston Logger
+```bash
+npm install winston
+```
+
+```javascript
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console({
+    format: winston.format.simple(),
+  }));
+}
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### 1. CORS Error
+**Problem:** `Access to XMLHttpRequest has been blocked by CORS policy`
+
+**Solution:** 
+- Add your frontend URL to `ALLOWED_ORIGINS` in `.env`
+- Update CORS configuration in `server.js`
+
+#### 2. Connection Refused (Android Emulator)
+**Problem:** Cannot connect to `localhost:5000`
+
+**Solution:** Use `10.0.2.2` instead of `localhost`:
+```dart
+static const String _baseUrl = 'http://10.0.2.2:5000/api';
+```
+
+#### 3. Twilio SMS Not Sending
+**Problem:** SMS not received
+
+**Solution:**
+- Verify Twilio credentials in `.env`
+- Check Twilio console for errors
+- Ensure phone number is verified (trial accounts)
+- Check balance in Twilio account
+
+#### 4. JWT Token Invalid
+**Problem:** `403 Forbidden - Invalid token`
+
+**Solution:**
+- Ensure JWT_SECRET matches between requests
+- Check token expiration (default 24h)
+- Verify token is sent in Authorization header
+
+#### 5. OTP Expired
+**Problem:** "OTP has expired"
+
+**Solution:**
+- OTPs expire after 10 minutes
+- Request a new OTP
+- Check system time is synchronized
+
+## 📝 Additional Configuration
+
+### Email Integration (SendGrid)
+
+```bash
+npm install @sendgrid/mail
+```
+
+```javascript
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const sendEmail = async (email, subject, message) => {
+  const msg = {
+    to: email,
+    from: process.env.EMAIL_FROM,
+    subject: subject,
+    text: message,
+    html: `<p>${message}</p>`,
+  };
+  
+  await sgMail.send(msg);
+};
+```
+
+### Database Connection (PostgreSQL)
+
+```bash
+npm install pg
+```
+
+```javascript
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
+
+// Example query
+const findUser = async (identifier) => {
+  const result = await pool.query(
+    'SELECT * FROM users WHERE email = $1 OR username = $1 OR phone = $1',
+    [identifier]
+  );
+  return result.rows[0];
+};
+```
+
+## 🧪 Testing
+
+### Unit Tests (Jest)
+
+```bash
+npm test
+```
+
+```javascript
+// server.test.js
+const request = require('supertest');
+const app = require('./server');
+
+describe('Authentication Endpoints', () => {
+  test('POST /api/auth/login/username - Success', async () => {
+    const response = await request(app)
+      .post('/api/auth/login/username')
+      .send({
+        username: 'admin',
+        password: 'admin123'
+      });
+    
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.token).toBeDefined();
+  });
+  
+  test('POST /api/auth/login/username - Invalid credentials', async () => {
+    const response = await request(app)
+      .post('/api/auth/login/username')
+      .send({
+        username: 'admin',
+        password: 'wrongpassword'
+      });
+    
+    expect(response.status).toBe(401);
+    expect(response.body.success).toBe(false);
+  });
+});
+```
+
+## 📚 Resources
+
+- [Express.js Documentation](https://expressjs.com/)
+- [Flutter Documentation](https://flutter.dev/docs)
+- [Twilio API Documentation](https://www.twilio.com/docs)
+- [JWT Documentation](https://jwt.io/)
+- [Provider State Management](https://pub.dev/packages/provider)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👥 Support
+
+For support, email support@chess-princess.com or open an issue on GitHub.
+
+---
+
+**Happy Coding! ♟️**
+----
+# Chess Princess Authentication - Complete File Reference
+
+## 📁 All Files You Need
+
+### ✅ Files Already in Your Project (Keep These)
+1. `lib/main.dart` - **REPLACE with fixed version**
+2. `lib/presentation/screens/auth/login_screen.dart` - **REPLACE with fixed version**
+3. `lib/presentation/screens/auth/register_screen.dart` - ✓ Keep as is
+4. `lib/data/services/auth_service.dart` - ✓ Keep, just update BASE_URL
+
+### 📦 New Files to Create
+
+#### 1. lib/core/enums/auth_enums.dart
+```dart
+/// Authentication login methods
+enum LoginMethod {
+  sms,
+  whatsapp,
+  email,
+  username,
+}
+
+/// Authentication status
+enum AuthStatus {
+  initial,
+  authenticated,
+  unauthenticated,
+  loading,
+}
+```
+
+#### 2. lib/core/utils/validators.dart
+See artifact "validators.dart" - Complete validation utilities
+
+#### 3. lib/presentation/providers/auth_provider.dart
+See artifact "auth_provider.dart" - Fixed version with proper imports
+
+### 🔧 Files to Modify
+
+#### lib/data/services/auth_service.dart
+**Only change line 11:**
+```dart
+// OLD:
+static const String _baseUrl = 'https://your-api.com/api';
+
+// NEW (for local development):
+static const String _baseUrl = 'http://localhost:5000/api';
+
+// OR for Android emulator:
+static const String _baseUrl = 'http://10.0.2.2:5000/api';
+```
+
+### 🖥️ Backend Files
+
+#### backend/server.js
+See artifact "server.js" - Complete production-ready server
+
+#### backend/package.json
+```json
+{
+  "name": "chess-princess-auth-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "twilio": "^4.19.0",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0"
+  }
+}
+```
+
+#### backend/.env
+```env
+NODE_ENV=development
+PORT=5000
+JWT_SECRET=your-super-secret-jwt-key-min-32-chars
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE=+1234567890
+FRONTEND_URL=http://localhost:3000
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
+```
+
+## 🔄 Import Path Reference
+
+### Correct Import Statements
+
+**In login_screen.dart:**
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../core/enums/auth_enums.dart';
+import '../../providers/auth_provider.dart';
+import '../../../core/utils/validators.dart';
+```
+
+**In register_screen.dart:**
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../../core/utils/validators.dart';
+```
+
+**In auth_provider.dart:**
+```dart
+import 'package:flutter/foundation.dart';
+import '../../data/services/auth_service.dart';
+import '../../core/enums/auth_enums.dart';
+```
+
+**In main.dart:**
+```dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+
+import 'chess/chess_app.dart';
+import 'database/puzzle_database.dart';
+import 'data/services/auth_service.dart';
+import 'presentation/providers/auth_provider.dart';
+import 'presentation/screens/auth/login_screen.dart';
+import 'presentation/screens/auth/register_screen.dart';
+import 'presentation/pages/training/training_hub_page.dart';
+```
+
+## 🎯 Key Changes Made
+
+### Fixed Issues:
+
+1. **AuthProvider Import Error** ✓
+   - Removed `as auth_providers` alias
+   - Fixed all references to use `AuthProvider` directly
+
+2. **Timer Issue** ✓
+   - Fixed infinite recursion in OTP countdown
+   - Added proper mounted checks
+
+3. **Button State** ✓
+   - Fixed disabled button styling
+   - Proper loading state management
+
+4. **Type Safety** ✓
+   - All generics properly typed
+   - No implicit dynamic types
+
+## 📝 Step-by-Step Implementation
+
+### Step 1: Create Folders
+```bash
+mkdir -p lib/core/enums
+mkdir -p lib/core/utils
+mkdir -p lib/presentation/providers
+```
+
+### Step 2: Create New Files
+
+Copy and paste code from artifacts:
+1. Create `lib/core/enums/auth_enums.dart`
+2. Create `lib/core/utils/validators.dart`
+3. Create `lib/presentation/providers/auth_provider.dart`
+
+### Step 3: Replace Existing Files
+
+Replace content in:
+1. `lib/main.dart` - Use fixed_main artifact
+2. `lib/presentation/screens/auth/login_screen.dart` - Use fixed_login_screen artifact
+
+### Step 4: Update auth_service.dart
+
+Only change the BASE_URL constant (line 11)
+
+### Step 5: Backend Setup
+
+```bash
+cd backend
+npm install
+# Edit .env file
+node server.js
+```
+
+### Step 6: Run Flutter App
+
+```bash
+flutter pub get
+flutter run
+```
+
+## 🧪 Verification
+
+After setup, test these:
+
+1. **App Starts** ✓
+   - No compilation errors
+   - Login screen appears
+
+2. **Username Login** ✓
+   - Username: admin
+   - Password: admin123
+   - Should navigate to home
+
+3. **OTP Methods** ✓
+   - SMS/WhatsApp/Email tabs visible
+   - Get OTP button works
+   - Countdown timer shows
+
+4. **Registration** ✓
+   - Can navigate to register screen
+   - All fields validate
+   - Creates new account
+
+## 🐛 Debugging Tips
+
+### If you see: "The name 'AuthProvider' isn't a type"
+**Fix:** Check import in login_screen.dart, should be:
+```dart
+import '../../providers/auth_provider.dart';
+```
+
+### If you see: "isLoading can't be accessed"
+**Fix:** Make sure Consumer<AuthProvider> is used:
+```dart
+Consumer<AuthProvider>(
+  builder: (context, authProvider, child) {
+    // Use authProvider.isLoading here
+  },
+)
+```
+
+### If backend won't connect:
+**Fix:** Check these in order:
+1. Backend server is running (`node server.js`)
+2. Correct IP address in auth_service.dart
+3. No firewall blocking port 5000
+4. CORS configured in backend .env
+
+## 📊 Final Project Structure
+
+```
+chess_princess/
+├── backend/
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+├── lib/
+│   ├── main.dart (REPLACED)
+│   ├── core/
+│   │   ├── enums/
+│   │   │   └── auth_enums.dart (NEW)
+│   │   └── utils/
+│   │       └── validators.dart (NEW)
+│   ├── data/
+│   │   └── services/
+│   │       └── auth_service.dart (UPDATE BASE_URL)
+│   └── presentation/
+│       ├── providers/
+│       │   └── auth_provider.dart (NEW)
+│       └── screens/
+│           └── auth/
+│               ├── login_screen.dart (REPLACED)
+│               └── register_screen.dart (KEEP)
+└── pubspec.yaml (ADD DEPENDENCIES)
+```
+
+## ✅ Success Criteria
+
+You'll know everything is working when:
+
+- [x] App compiles with no errors
+- [x] Login screen displays
+- [x] Can login with admin/admin123
+- [x] All 4 login methods show tabs
+- [x] OTP countdown works
+- [x] Registration screen accessible
+- [x] Backend responds to requests
+- [x] Session persists on restart
+
+## 🎉 You're Done!
+
+Your production-ready authentication
+---
+# Chess Princess - Quick Setup Guide
+
+## 🚀 Complete Setup in 5 Minutes
+
+### Step 1: Create Project Structure
+
+Create these folders in your Flutter project:
+
+```
+lib/
+├── core/
+│   ├── enums/
+│   │   └── auth_enums.dart          (Already provided)
+│   └── utils/
+│       └── validators.dart          (Already provided)
+├── data/
+│   └── services/
+│       └── auth_service.dart        (Update with code below)
+└── presentation/
+    ├── providers/
+    │   └── auth_provider.dart       (Fixed version provided)
+    └── screens/
+        └── auth/
+            ├── login_screen.dart    (Fixed version provided)
+            └── register_screen.dart (Already in your files)
+```
+
+### Step 2: Update auth_service.dart
+
+**IMPORTANT**: Update the base URL in `lib/data/services/auth_service.dart`:
+
+```dart
+// Change this line (around line 11):
+static const String _baseUrl = 'https://your-api.com/api';
+
+// To one of these:
+// For local development:
+static const String _baseUrl = 'http://localhost:5000/api';
+
+// For Android emulator:
+static const String _baseUrl = 'http://10.0.2.2:5000/api';
+
+// For iOS simulator:
+static const String _baseUrl = 'http://localhost:5000/api';
+
+// For physical device (replace with your computer's IP):
+static const String _baseUrl = 'http://192.168.1.100:5000/api';
+
+// For production:
+static const String _baseUrl = 'https://your-domain.com/api';
+```
+
+### Step 3: Backend Setup
+
+#### Option A: Quick Start (Node.js)
+
+```bash
+# Create backend folder
+mkdir backend
+cd backend
+
+# Create package.json
+npm init -y
+
+# Install dependencies
+npm install express dotenv bcrypt jsonwebtoken twilio cors express-rate-limit helmet
+
+# Create .env file
+cat > .env << EOL
+NODE_ENV=development
+PORT=5000
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-min-32-chars
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_PHONE=+1234567890
+FRONTEND_URL=http://localhost:3000
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
+EOL
+
+# Copy server.js (provided earlier)
+# Then start server:
+node server.js
+```
+
+#### Option B: Docker (Easiest)
+
+```bash
+# In backend folder
+docker-compose up -d
+
+# View logs
+docker-compose logs -f api
+```
+
+### Step 4: Update Flutter Dependencies
+
+Add to `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.1
+  dio: ^5.4.0
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+```
+
+Run:
+```bash
+flutter pub get
+```
+
+### Step 5: File Checklist
+
+Replace/Create these files with the code provided:
+
+- ✅ `lib/core/enums/auth_enums.dart` - Provided ✓
+- ✅ `lib/core/utils/validators.dart` - Provided ✓
+- ✅ `lib/data/services/auth_service.dart` - Update BASE_URL
+- ✅ `lib/presentation/providers/auth_provider.dart` - Use fixed version ✓
+- ✅ `lib/presentation/screens/auth/login_screen.dart` - Use fixed version ✓
+- ✅ `lib/presentation/screens/auth/register_screen.dart` - Already have ✓
+- ✅ `lib/main.dart` - Use fixed version ✓
+
+### Step 6: Test the Application
+
+```bash
+# Start backend server (in backend folder)
+cd backend
+node server.js
+
+# In new terminal, run Flutter app
+cd ..
+flutter run
+```
+
+### Step 7: Test Login
+
+Use these demo credentials:
+
+**Username/Password Login:**
+- Username: `admin`
+- Password: `admin123`
+
+**OTP Login (Development Mode):**
+- The OTP will be printed in the backend console
+- Any phone number or email will work in development mode
+
+## 🔧 Common Issues & Solutions
+
+### Issue 1: "The name 'AuthProvider' isn't a type"
+
+**Solution:** Make sure the import in login_screen.dart is:
+```dart
+import '../../providers/auth_provider.dart';
+```
+
+NOT:
+```dart
+import '../../providers/auth_provider.dart' as auth_providers;
+```
+
+### Issue 2: Connection Refused
+
+**Solutions:**
+
+For **Android Emulator**:
+```dart
+static const String _baseUrl = 'http://10.0.2.2:5000/api';
+```
+
+For **iOS Simulator**:
+```dart
+static const String _baseUrl = 'http://localhost:5000/api';
+```
+
+For **Physical Device**:
+1. Find your computer's IP address:
+   - Windows: `ipconfig`
+   - Mac/Linux: `ifconfig`
+2. Use that IP:
+```dart
+static const String _baseUrl = 'http://192.168.1.XXX:5000/api';
+```
+
+### Issue 3: "AuthService isn't a function"
+
+**Solution:** In main.dart, ensure you have:
+```dart
+import 'data/services/auth_service.dart';
+```
+
+### Issue 4: CORS Error
+
+**Solution:** In backend `.env`, add your frontend URL:
+```
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080,http://10.0.2.2:8080
+```
+
+### Issue 5: OTP Not Sending
+
+**Development Mode:**
+- Check backend console for the OTP code
+- It will be printed like: `📱 SMS (MOCK): Your code is: 123456`
+
+**Production Mode:**
+- Verify Twilio credentials in `.env`
+- Check Twilio console for errors
+- Ensure phone number format is correct (+919876543210)
+
+## 📱 Testing Checklist
+
+- [ ] Backend server running on port 5000
+- [ ] Flutter app connects to backend
+- [ ] Login with username/password works
+- [ ] SMS OTP button appears
+- [ ] OTP countdown timer works
+- [ ] Email OTP form displays
+- [ ] WhatsApp OTP form displays
+- [ ] Registration screen accessible
+- [ ] Registration creates new user
+- [ ] Logout button works
+- [ ] Session persists on app restart
+
+## 🎯 Quick Test Script
+
+```bash
+# Terminal 1: Start Backend
+cd backend
+node server.js
+
+# Terminal 2: Test API
+curl http://localhost:5000/api/health
+
+# Should return: {"status":"OK",...}
+
+# Terminal 3: Test Login
+curl -X POST http://localhost:5000/api/auth/login/username \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+
+# Should return token and user data
+
+# Terminal 4: Run Flutter
+flutter run
+```
+
+## 📊 Project Status
+
+After setup, you should have:
+
+✅ **Backend Server**: Running on http://localhost:5000  
+✅ **Flutter App**: Running on emulator/device  
+✅ **Authentication**: All 4 methods working  
+✅ **OTP System**: Sending and verifying codes  
+✅ **Session Management**: Persisting login state  
+✅ **Registration**: Creating new users  
+
+## 🆘 Need Help?
+
+1. **Check backend logs**: Look for errors in terminal
+2. **Check Flutter logs**: Run with `flutter run -v`
+3. **Verify API endpoint**: Test with curl or Postman
+4. **Check imports**: Ensure all import paths are correct
+5. **Clean build**: Run `flutter clean && flutter pub get`
+
+## 🎉 Success!
+
+Once you see the login screen and can log in with admin/admin123, you're all set!
+
+**Next Steps:**
+- Configure Twilio for production SMS
+- Set up real email service
+- Deploy backend to production
+- Build release APK/IPA
+- Submit to app stores
+
+---
+
+**Pro Tip:** Keep the backend terminal open to see OTP codes in development mode!
+----
+
+

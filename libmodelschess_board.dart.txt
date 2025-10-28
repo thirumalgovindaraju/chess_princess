@@ -1,0 +1,336 @@
+// lib/models/chess_board.dart
+
+import 'position.dart';
+
+// Enums for piece types and colors
+enum PieceType { king, queen, rook, bishop, knight, pawn }
+enum PieceColor { white, black }
+
+// Chess piece class with full features
+class ChessPiece {
+  final PieceType type;
+  final PieceColor color;
+  bool hasMoved;
+
+  ChessPiece(this.type, this.color, {this.hasMoved = false});
+
+  // Compatibility properties for existing code
+  String get typeString {
+    switch (type) {
+      case PieceType.king: return 'k';
+      case PieceType.queen: return 'q';
+      case PieceType.rook: return 'r';
+      case PieceType.bishop: return 'b';
+      case PieceType.knight: return 'n';
+      case PieceType.pawn: return 'p';
+    }
+  }
+
+  bool get isWhite => color == PieceColor.white;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ChessPiece && other.type == type && other.color == color;
+  }
+
+  @override
+  int get hashCode => type.hashCode ^ color.hashCode;
+
+  @override
+  String toString() => '${color.name} ${type.name}';
+
+  int get value {
+    switch (type) {
+      case PieceType.pawn: return 100;
+      case PieceType.knight: return 320;
+      case PieceType.bishop: return 330;
+      case PieceType.rook: return 500;
+      case PieceType.queen: return 900;
+      case PieceType.king: return 20000;
+    }
+  }
+
+  String get symbol {
+    switch (type) {
+      case PieceType.king:
+        return color == PieceColor.white ? '♔' : '♚';
+      case PieceType.queen:
+        return color == PieceColor.white ? '♕' : '♛';
+      case PieceType.rook:
+        return color == PieceColor.white ? '♖' : '♜';
+      case PieceType.bishop:
+        return color == PieceColor.white ? '♗' : '♝';
+      case PieceType.knight:
+        return color == PieceColor.white ? '♘' : '♞';
+      case PieceType.pawn:
+        return color == PieceColor.white ? '♙' : '♟';
+    }
+  }
+
+  String get name {
+    switch (type) {
+      case PieceType.king: return 'King';
+      case PieceType.queen: return 'Queen';
+      case PieceType.rook: return 'Rook';
+      case PieceType.bishop: return 'Bishop';
+      case PieceType.knight: return 'Knight';
+      case PieceType.pawn: return 'Pawn';
+    }
+  }
+
+  String get algebraicSymbol {
+    switch (type) {
+      case PieceType.king: return 'K';
+      case PieceType.queen: return 'Q';
+      case PieceType.rook: return 'R';
+      case PieceType.bishop: return 'B';
+      case PieceType.knight: return 'N';
+      case PieceType.pawn: return '';
+    }
+  }
+
+  ChessPiece copy() {
+    return ChessPiece(type, color, hasMoved: hasMoved);
+  }
+
+  factory ChessPiece.fromFen(String fen) {
+    PieceColor color = fen.toUpperCase() == fen ? PieceColor.white : PieceColor.black;
+
+    switch (fen.toLowerCase()) {
+      case 'k': return ChessPiece(PieceType.king, color);
+      case 'q': return ChessPiece(PieceType.queen, color);
+      case 'r': return ChessPiece(PieceType.rook, color);
+      case 'b': return ChessPiece(PieceType.bishop, color);
+      case 'n': return ChessPiece(PieceType.knight, color);
+      case 'p': return ChessPiece(PieceType.pawn, color);
+      default: throw ArgumentError('Invalid FEN piece notation: $fen');
+    }
+  }
+
+  String toFen() {
+    String symbol = algebraicSymbol.toLowerCase();
+    if (type == PieceType.pawn) {
+      symbol = 'p';
+    }
+    return color == PieceColor.white ? symbol.toUpperCase() : symbol;
+  }
+
+  // Helper constructor for simple string-based creation
+  factory ChessPiece.fromString(String typeStr, bool isWhite) {
+    final color = isWhite ? PieceColor.white : PieceColor.black;
+    switch (typeStr.toLowerCase()) {
+      case 'k': return ChessPiece(PieceType.king, color);
+      case 'q': return ChessPiece(PieceType.queen, color);
+      case 'r': return ChessPiece(PieceType.rook, color);
+      case 'b': return ChessPiece(PieceType.bishop, color);
+      case 'n': return ChessPiece(PieceType.knight, color);
+      case 'p': return ChessPiece(PieceType.pawn, color);
+      default: throw ArgumentError('Invalid piece type: $typeStr');
+    }
+  }
+}
+
+// Chess board class
+class ChessBoard {
+  List<List<ChessPiece?>> squares;
+  bool isWhiteTurn;
+  List<String> moveHistory;
+  List<ChessPiece> capturedPieces;
+  bool isGameOver;
+  //bool? winner; // true = white wins, false = black wins, null = draw
+  PieceColor? winner;
+  Function(ChessPiece)? _onPieceCaptured;
+
+  ChessBoard({
+    required this.squares,
+    this.isWhiteTurn = true,
+    List<String>? moveHistory,
+    List<ChessPiece>? capturedPieces,
+    this.isGameOver = false,
+    this.winner,
+  })  : moveHistory = moveHistory ?? [],
+        capturedPieces = capturedPieces ?? [];
+
+  // Compatibility getters
+  PieceColor get currentPlayer => isWhiteTurn ? PieceColor.white : PieceColor.black;
+
+  factory ChessBoard.initial() {
+    final squares = List.generate(8, (_) => List<ChessPiece?>.filled(8, null));
+
+    // Black pieces (row 0 and 1)
+    squares[0][0] = ChessPiece(PieceType.rook, PieceColor.black);
+    squares[0][1] = ChessPiece(PieceType.knight, PieceColor.black);
+    squares[0][2] = ChessPiece(PieceType.bishop, PieceColor.black);
+    squares[0][3] = ChessPiece(PieceType.queen, PieceColor.black);
+    squares[0][4] = ChessPiece(PieceType.king, PieceColor.black);
+    squares[0][5] = ChessPiece(PieceType.bishop, PieceColor.black);
+    squares[0][6] = ChessPiece(PieceType.knight, PieceColor.black);
+    squares[0][7] = ChessPiece(PieceType.rook, PieceColor.black);
+    for (int col = 0; col < 8; col++) {
+      squares[1][col] = ChessPiece(PieceType.pawn, PieceColor.black);
+    }
+
+    // White pieces (row 6 and 7)
+    for (int col = 0; col < 8; col++) {
+      squares[6][col] = ChessPiece(PieceType.pawn, PieceColor.white);
+    }
+    squares[7][0] = ChessPiece(PieceType.rook, PieceColor.white);
+    squares[7][1] = ChessPiece(PieceType.knight, PieceColor.white);
+    squares[7][2] = ChessPiece(PieceType.bishop, PieceColor.white);
+    squares[7][3] = ChessPiece(PieceType.queen, PieceColor.white);
+    squares[7][4] = ChessPiece(PieceType.king, PieceColor.white);
+    squares[7][5] = ChessPiece(PieceType.bishop, PieceColor.white);
+    squares[7][6] = ChessPiece(PieceType.knight, PieceColor.white);
+    squares[7][7] = ChessPiece(PieceType.rook, PieceColor.white);
+
+    return ChessBoard(squares: squares, isWhiteTurn: true);
+  }
+
+  ChessBoard copy() {
+    final newSquares = List.generate(8, (row) {
+      return List.generate(8, (col) {
+        final piece = squares[row][col];
+        return piece?.copy();
+      });
+    });
+
+    return ChessBoard(
+      squares: newSquares,
+      isWhiteTurn: isWhiteTurn,
+      moveHistory: List.from(moveHistory),
+      capturedPieces: capturedPieces.map((p) => p.copy()).toList(),
+      isGameOver: isGameOver,
+      winner: winner,
+    );
+  }
+
+  bool makeMove(Position from, Position to) {
+    final piece = squares[from.row][from.col];
+    if (piece == null || piece.isWhite != isWhiteTurn) {
+      return false;
+    }
+
+    final capturedPiece = squares[to.row][to.col];
+    if (capturedPiece != null) {
+      capturedPieces.add(capturedPiece);
+      _onPieceCaptured?.call(capturedPiece);
+    }
+
+    squares[to.row][to.col] = piece;
+    squares[from.row][from.col] = null;
+    piece.hasMoved = true;
+
+    final moveNotation = _positionToNotation(from) + _positionToNotation(to);
+    moveHistory.add(moveNotation);
+
+    isWhiteTurn = !isWhiteTurn;
+    return true;
+  }
+  // Add this factory constructor to your ChessBoard class
+
+  factory ChessBoard.fromFen(String fen) {
+    final parts = fen.split(' ');
+    final position = parts[0];
+    final turn = parts.length > 1 ? parts[1] : 'w';
+
+    final squares = List.generate(8, (_) => List<ChessPiece?>.filled(8, null));
+
+    final rows = position.split('/');
+    for (int row = 0; row < 8 && row < rows.length; row++) {
+      int col = 0;
+      for (int i = 0; i < rows[row].length; i++) {
+        final char = rows[row][i];
+        if (char.contains(RegExp(r'[1-8]'))) {
+          // Empty squares
+          col += int.parse(char);
+        } else {
+          // Piece
+          squares[row][col] = ChessPiece.fromFen(char);
+          col++;
+        }
+      }
+    }
+
+    return ChessBoard(
+      squares: squares,
+      isWhiteTurn: turn == 'w',
+    );
+  }
+  void movePiece(Position from, Position to) {
+    final piece = squares[from.row][from.col];
+    if (piece == null) return;
+
+    final capturedPiece = squares[to.row][to.col];
+    if (capturedPiece != null) {
+      capturedPieces.add(capturedPiece);
+      _onPieceCaptured?.call(capturedPiece);
+    }
+
+    squares[to.row][to.col] = piece;
+    squares[from.row][from.col] = null;
+    piece.hasMoved = true;
+    isWhiteTurn = !isWhiteTurn;
+  }
+
+  ChessPiece? getPieceAt(Position pos) {
+    if (pos.row < 0 || pos.row >= 8 || pos.col < 0 || pos.col >= 8) {
+      return null;
+    }
+    return squares[pos.row][pos.col];
+  }
+
+  void setPieceAt(Position pos, ChessPiece? piece) {
+    if (pos.row < 0 || pos.row >= 8 || pos.col < 0 || pos.col >= 8) {
+      return;
+    }
+    squares[pos.row][pos.col] = piece;
+  }
+
+  bool isValidPosition(Position pos) {
+    return pos.row >= 0 && pos.row < 8 && pos.col >= 0 && pos.col < 8;
+  }
+
+  void addCaptureListener(Function(ChessPiece) listener) {
+    _onPieceCaptured = listener;
+  }
+
+  bool undoLastMove() {
+    if (moveHistory.isEmpty) return false;
+    moveHistory.removeLast();
+    isWhiteTurn = !isWhiteTurn;
+    if (capturedPieces.isNotEmpty) {
+      capturedPieces.removeLast();
+    }
+    return true;
+  }
+
+  void reset() {
+    final initial = ChessBoard.initial();
+    squares = initial.squares;
+    isWhiteTurn = true;
+    moveHistory.clear();
+    capturedPieces.clear();
+    isGameOver = false;
+    winner = null;
+  }
+
+  String _positionToNotation(Position pos) {
+    const files = 'abcdefgh';
+    return '${files[pos.col]}${8 - pos.row}';
+  }
+
+  @override
+  String toString() {
+    String result = '';
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        final piece = squares[row][col];
+        result += piece != null ? piece.symbol : '.';
+        result += ' ';
+      }
+      result += '\n';
+    }
+    return result;
+  }
+}

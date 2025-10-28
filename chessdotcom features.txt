@@ -1,0 +1,148 @@
+♟️ 1. Playing Features
+🔹 Game Modes
+
+Live Chess: Play real-time games against humans online (bullet, blitz, rapid, classical).
+
+Daily Chess: Play correspondence-style games where you have days per move.
+
+Computer Games: Practice against AI bots of different strengths and personalities.
+
+Variants:
+
+Chess960 (Fischer Random)
+
+3 Check
+
+King of the Hill
+
+Crazyhouse
+
+Bughouse (team play)
+
+4 Player Chess
+
+Fog of War
+
+Atomic Chess
+
+Duck Chess (new fun variant)
+
+🧠 2. Learning & Training
+🔹 Lessons
+
+Interactive video lessons from top coaches and titled players.
+
+Step-by-step skill levels (Beginner → Advanced).
+
+Includes puzzles and quizzes after each lesson.
+
+🔹 Drills & Trainer Tools
+
+Practice specific endgames or openings.
+
+“Vision Trainer” to improve board visualization.
+
+“Tactics Trainer” for pattern recognition.
+
+🧩 3. Puzzles
+
+Daily Puzzle: One free curated puzzle each day.
+
+Puzzle Rush: Solve as many puzzles as possible within 3 or 5 minutes.
+
+Puzzle Battle: Real-time head-to-head puzzle solving.
+
+Puzzle Themes: Practice specific tactical motifs (pins, forks, skewers, etc.).
+
+Custom Puzzle Sets: Create your own puzzle collection.
+
+📊 4. Analysis Tools
+
+Game Review: AI-powered post-game analysis showing mistakes, blunders, and brilliancies.
+
+Engine Analysis: Stockfish or other engines for deep move evaluation.
+
+Opening Explorer: See which openings are most popular and successful.
+
+Report Summary: Accuracy score, missed tactics, and key moments.
+
+🏆 5. Tournaments & Events
+
+Arena Tournaments: Fast-paced, timed events.
+
+Swiss Tournaments: Standard tournament format.
+
+Official Events: Titled Tuesdays, Bullet Brawls, Speed Chess Championships.
+
+Club Tournaments: Custom events hosted by clubs or friends.
+
+🌐 6. Community & Clubs
+
+Friends List: Challenge friends and chat.
+
+Clubs: Join or create chess clubs with chat, forums, and tournaments.
+
+Teams & Leagues: Participate in team matches and global leagues.
+
+Forums: Discuss openings, endgames, or chess news.
+
+📱 7. Mobile & Cross-Platform
+
+Available on iOS, Android, and Web.
+
+Syncs games, stats, and puzzles across devices.
+
+Offline play against computer available on mobile.
+
+🧩 8. Customization
+
+Choose from hundreds of boards, pieces, and themes.
+
+2D or 3D views.
+
+Sound and animation settings.
+
+📈 9. Statistics & Rating System
+
+Separate ratings for:
+
+Bullet
+
+Blitz
+
+Rapid
+
+Daily
+
+Puzzles
+
+Chess960
+
+Progress charts and accuracy graphs.
+
+Performance vs. friends and global leaderboards.
+
+📰 10. News, Articles & Videos
+
+Chess.com hosts:
+
+News coverage of major tournaments (FIDE, Champions Chess Tour, etc.).
+
+Articles from top chess writers and coaches.
+
+Live broadcasts with commentary by GMs and streamers.
+
+💬 11. Communication & Streaming
+
+In-game chat and emojis (optional filters).
+
+Live stream integration with Twitch/YouTube.
+
+Spectator mode for watching live games.
+
+💎 12. Premium Membership Features
+Tier	Key Features
+Free	Play games, limited puzzles, daily game review
+Gold	Unlimited puzzles, detailed analysis
+Platinum	All lessons unlocked, advanced insights
+Diamond	Full access: master lessons, unlimited game reviews, deeper Stockfish analysis

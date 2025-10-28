@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1068385777587",
+    "project_id": "chess-princess",
+    "storage_bucket": "chess-princess.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068385777587:android:9860e1f3da7447c02dfdc6",
+        "android_client_info": {
+          "package_name": "com.example.chess_princess"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHl5Wz6YpCcCmR4etjpERW4-8gOHl-1L4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

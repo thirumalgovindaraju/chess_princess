@@ -2,8 +2,8 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch:
+    branches: [ master, main ]  # ✅ Works with both main and master
+  workflow_dispatch:  # ✅ Allows manual trigger
 
 permissions:
   contents: write
@@ -23,14 +23,10 @@ jobs:
           channel: 'stable'
       
       - name: 📦 Install Dependencies
-        run: |
-          flutter pub get
-        working-directory: .
+        run: flutter pub get
       
       - name: 🏗️ Build Web App
-        run: |
-          flutter build web --release --base-href /chess_princess/
-        working-directory: .
+        run: flutter build web --release --base-href /chess_princess/
       
       - name: 📤 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -1,0 +1,36 @@
+{
+  "title": "Endgame Studies",
+  "source": "Classical Endgame Studies",
+  "imagePath": "assets/images/endgame_studies.png",
+  "description": "Beautiful endgame compositions and studies",
+  "puzzles": [
+    {
+      "id": "es_001",
+      "fen": "8/8/8/8/8/3k4/3P4/3K4 w - - 0 1",
+      "solution": ["Kd1c2", "Kd3c4", "d2d3", "Kc4d5", "d3d4"],
+      "description": "King and Pawn vs King",
+      "difficulty": "medium",
+      "theme": "Endgame",
+      "movesToMate": null,
+      "playerColor": "white",
+      "metadata": {
+        "endgame_type": "king_pawn_vs_king",
+        "concept": "opposition"
+      }
+    },
+    {
+      "id": "es_002",
+      "fen": "8/8/8/8/8/2k5/2P5/2K5 w - - 0 1",
+      "solution": ["Kc1d2", "Kc3d4", "c2c3", "Kd4e5", "c3c4"],
+      "description": "Pawn Promotion Race",
+      "difficulty": "medium",
+      "theme": "Endgame",
+      "movesToMate": null,
+      "playerColor": "white",
+      "metadata": {
+        "endgame_type": "pawn_endgame",
+        "concept": "pawn_promotion"
+      }
+    }
+  ]
+}

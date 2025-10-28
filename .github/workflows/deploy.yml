@@ -31,10 +31,18 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Files in current directory:"
           ls -la
+          echo "Checking for lib/main.dart:"
+          test -f lib/main.dart && echo "lib/main.dart exists" || echo "ERROR: lib/main.dart NOT FOUND!"
           echo "Building Flutter web app..."
-          flutter build web --release --base-href /chess_princess/
+          flutter build web --release --base-href /chess_princess/ 2>&1 | tee build.log
+          BUILD_EXIT_CODE=${PIPESTATUS[0]}
+          echo "Build exit code: $BUILD_EXIT_CODE"
+          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+            echo "Build failed! Check errors above."
+            exit 1
+          fi
           echo "Build complete. Checking output..."
-          ls -la build/web/
+          ls -la build/web/ || echo "build/web directory not found!"
           test -f build/web/index.html && echo "index.html found!" || echo "ERROR: index.html not found!"
 
       - name: 📤 Deploy to GitHub Pages

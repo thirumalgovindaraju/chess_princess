@@ -1,0 +1,50 @@
+{
+  "title": "Checkmate Patterns",
+  "source": "Essential Checkmate Patterns",
+  "imagePath": "assets/images/checkmate_patterns.png",
+  "description": "Learn the most important checkmate patterns",
+  "puzzles": [
+    {
+      "id": "cm_001",
+      "fen": "6k1/5ppp/8/8/8/8/8/R6K w - - 0 1",
+      "solution": ["Ra1a8"],
+      "description": "Back Rank Mate",
+      "difficulty": "easy",
+      "theme": "Checkmate",
+      "movesToMate": 1,
+      "playerColor": "white",
+      "metadata": {
+        "pattern": "back_rank_mate",
+        "piece_combination": "rook"
+      }
+    },
+    {
+      "id": "cm_002",
+      "fen": "r5k1/5ppp/8/8/8/8/8/4R2K w - - 0 1",
+      "solution": ["Re1e8"],
+      "description": "Back Rank Checkmate",
+      "difficulty": "easy",
+      "theme": "Checkmate",
+      "movesToMate": 1,
+      "playerColor": "white",
+      "metadata": {
+        "pattern": "back_rank_mate",
+        "weakness": "trapped_king"
+      }
+    },
+    {
+      "id": "cm_003",
+      "fen": "6rk/6pp/8/8/8/8/8/5R1K w - - 0 1",
+      "solution": ["Rf1f8"],
+      "description": "Rook Mate on Back Rank",
+      "difficulty": "easy",
+      "theme": "Checkmate",
+      "movesToMate": 1,
+      "playerColor": "white",
+      "metadata": {
+        "pattern": "back_rank_mate",
+        "tactical_motif": "mate_in_one"
+      }
+    }
+  ]
+}

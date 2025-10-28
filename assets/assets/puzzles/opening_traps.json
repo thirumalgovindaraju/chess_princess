@@ -1,0 +1,36 @@
+{
+  "title": "Opening Traps",
+  "source": "Famous Opening Traps",
+  "imagePath": "assets/images/opening_traps.png",
+  "description": "Learn to avoid and set opening traps",
+  "puzzles": [
+    {
+      "id": "ot_001",
+      "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3",
+      "solution": ["Qd1h5", "Nf6h5", "Bc4f7"],
+      "description": "Scholar's Mate Trap",
+      "difficulty": "easy",
+      "theme": "Opening",
+      "movesToMate": 2,
+      "playerColor": "white",
+      "metadata": {
+        "opening": "King's Pawn Game",
+        "trap_name": "scholars_mate"
+      }
+    },
+    {
+      "id": "ot_002",
+      "fen": "rnbqkbnr/ppp2ppp/3p4/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3",
+      "solution": ["Qd1h5", "g7g6", "Qh5e5"],
+      "description": "Napoleon Attack",
+      "difficulty": "medium",
+      "theme": "Opening",
+      "movesToMate": null,
+      "playerColor": "white",
+      "metadata": {
+        "opening": "King's Pawn Game",
+        "trap_name": "napoleon_attack"
+      }
+    }
+  ]
+}

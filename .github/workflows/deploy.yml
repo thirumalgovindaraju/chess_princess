@@ -27,7 +27,15 @@ jobs:
         run: flutter pub get
 
       - name: 🏗️ Build Web App
-        run: flutter build web --release --base-href /chess_princess/
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
+          echo "Building Flutter web app..."
+          flutter build web --release --base-href /chess_princess/
+          echo "Build complete. Checking output..."
+          ls -la build/web/
+          test -f build/web/index.html && echo "index.html found!" || echo "ERROR: index.html not found!"
 
       - name: 📤 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -11,7 +11,7 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
@@ -19,9 +19,9 @@ jobs:
       - name: 🔧 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'  # Updated to match SDK requirement ^3.9.2
+          flutter-version: '3.24.5'
           channel: 'stable'
-          cache: true  # Enable caching for faster builds
+          cache: true
 
       - name: 📦 Install Dependencies
         run: flutter pub get
